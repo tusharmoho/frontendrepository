@@ -1,0 +1,37 @@
+<div class="p-4">
+  <h2>Add User</h2>
+  <form (ngSubmit)="addUser()">
+    <input type="text" [(ngModel)]="newUser.userName" name="userName" placeholder="User Name" required />
+    <br><br>
+    <input type="text" [(ngModel)]="newUser.userSurname" name="userSurname" placeholder="User Surname" required />
+    <br><br>
+    <input type="text" [(ngModel)]="newUser.phoneNumber" name="phoneNumber" placeholder="Phone Number" required />
+    <br><br>
+    <input type="text" [(ngModel)]="newUser.address" name="address" placeholder="Address" required />
+    <br><br>
+    <button type="submit">Add</button>
+  </form>
+
+  <hr />
+
+  <h2>User List</h2>
+  <ul>
+    <li *ngFor="let user of users" (click)="viewUser(user)">
+      {{ user.userName }} ({{ user.userSurname }})
+    </li>
+  </ul>
+
+  <hr />
+  
+  <!-- Uncomment if you want to display selected user details -->
+  <!--
+  <div *ngIf="selectedUser">
+    <h3>User Details</h3>
+    <p>ID: {{ selectedUser.id }}</p>
+    <p>Name: {{ selectedUser.userName }} {{ selectedUser.userSurname }}</p>
+    <p>Phone: {{ selectedUser.phoneNumber }}</p>
+    <p>Address: {{ selectedUser.address }}</p>
+    <button (click)="clearSelected()">Clear</button>
+  </div>
+  -->
+</div>
