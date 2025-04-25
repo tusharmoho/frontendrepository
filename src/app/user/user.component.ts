@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { CommonModule, NgIf, NgFor } from '@angular/common'; // ✅ Add NgIf, NgFor
 import { FormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 interface User {
-  id: number;
+  id?: number;  // Made `id` optional since the backend generates it
+  userId?: string; // Adding for backend response handling
   userName: string;
   userSurname: string;
   phoneNumber: string;
@@ -12,31 +14,37 @@ interface User {
 
 @Component({
   selector: 'app-user',
-  templateUrl: './user.component.html'
+  standalone: true, 
+  templateUrl: './user.component.html',
+  imports: [FormsModule, HttpClientModule, CommonModule], 
 })
 export class UserComponent {
   users: User[] = [];
-  newUser: User = { id: 0, userName: '', userSurname: '', phoneNumber: '', address: '' };
+  newUser: User = { userName: '', userSurname: '', phoneNumber: '', address: '' };
   selectedUser: User | null = null;
   nextId: number = 1;
 
+  constructor(private http: HttpClient) {}  // Injecting HttpClient
+
   addUser() {
-    // Validate required fields
     if (!this.newUser.userName || !this.newUser.userSurname || !this.newUser.phoneNumber) return;
 
-    const userToAdd: User = {
-      id: this.nextId++,
-      userName: this.newUser.userName,
-      userSurname: this.newUser.userSurname,
-      phoneNumber: this.newUser.phoneNumber,
-      address: this.newUser.address,
-    };
+    const userToAdd: User = { ...this.newUser }; // Creating object without modifying newUser
 
-    // Add new user to the list
-    this.users = [...this.users, userToAdd];  // Create a new reference to the array, which will trigger change detection
+    this.http.post<{ responseCode: number; responseMessage: string; data: User }>('http://localhost:8099/user-service/save-user', userToAdd)
+      .subscribe({
+        next: (response) => {
+          console.log('Success:', response);
+          alert(`User saved successfully! ID: ${response.data.userId}, Name: ${response.data.userName}`);
 
-    // Clear the input form after adding the user
-    this.newUser = { id: 0, userName: '', userSurname: '', phoneNumber: '', address: '' };
+          this.users = [...this.users, response.data]; // Adding saved user from response
+          this.newUser = { userName: '', userSurname: '', phoneNumber: '', address: '' }; // Reset after success
+        },
+        error: (err) => {
+          console.error('Error:', err);
+          alert("Failed to save user.");
+        }
+      });
   }
 
   viewUser(user: User) {

@@ -23,15 +23,15 @@
 
   <hr />
   
-  <!-- Uncomment if you want to display selected user details -->
-  <!--
-  <div *ngIf="selectedUser">
+  
+  <div *ngIf="selectedUser()">
     <h3>User Details</h3>
-    <p>ID: {{ selectedUser.id }}</p>
-    <p>Name: {{ selectedUser.userName }} {{ selectedUser.userSurname }}</p>
-    <p>Phone: {{ selectedUser.phoneNumber }}</p>
-    <p>Address: {{ selectedUser.address }}</p>
+    <p>ID: {{ selectedUser?.id }}</p>
+    <p>Name: {{ selectedUser?.userName }} {{ selectedUser?.userSurname }}</p>
+    <p>Phone: {{ selectedUser?.phoneNumber }}</p>
+    <p>Address: {{ selectedUser?.address }}</p>
     <button (click)="clearSelected()">Clear</button>
   </div>
-  -->
+  
+ 
 </div>
