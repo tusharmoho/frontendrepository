@@ -20,7 +20,7 @@ interface User {
 })
 export class UserComponent implements OnInit {
   users: User[] = [];
-  newUser: User = { userName: '', userSurname: '', phoneNumber: '', address: '' };
+  newUser: User = { userName: '', userSurname: '', phoneNumber: '', address: '' ,userId:''};
   selectedUser: User | null = null;
   nextId: number = 1;
 
@@ -53,7 +53,7 @@ export class UserComponent implements OnInit {
 
   viewUser() {
     this.http.get<{ responseCode: number; responseMessage: string; data: { content: User[] } }>(
-      'http://localhost:8099/user-service/fetch-users?page=1&size=10&sort=userId,desc'
+      'http://localhost:8099/user-service/fetch-users?page=0&size=10'
     ).subscribe({
       next: (response) => {
         console.log('Success:', response);
@@ -67,6 +67,25 @@ export class UserComponent implements OnInit {
     });
   }
   
+  viewUserBasedId(userid: string) {
+    this.http.get<{ responseCode: number; responseMessage: string; data: User }>(
+      `http://localhost:8099/user-service/fetch-user?userId=${userid}`
+    ).subscribe({
+      next: (response) => {
+        console.log('Success:', response);
+        if (response.data) {
+          this.newUser = response.data; 
+          alert(`Fetched User Successfully!\nName: ${response.data.userName}\nSurname: ${response.data.userSurname}\nPhone: ${response.data.phoneNumber}`);
+        } else {
+          alert("User data not found.");
+        }
+      },
+      error: (err) => {
+        console.error('Error:', err);
+        alert("Failed to fetch user.");
+      }
+    });
+  }
   
 
   clearSelected() {

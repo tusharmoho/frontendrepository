@@ -8,6 +8,7 @@
       <th>User Surname</th>
       <th>Phone Number</th>
       <th>Address</th>
+      <th>View</th>
     </tr>
   </thead>
   <tbody>
@@ -16,14 +17,18 @@
       <td>{{ user.userSurname }}</td>
       <td>{{ user.phoneNumber }}</td>
       <td>{{ user.address }}</td>
+      <td>
+        <button (click)="viewUserBasedId(user.userId)">View</button> <!-- Fixed Event Binding -->
+      </td>
     </tr>
   </tbody>
 </table>
 
+
 <hr />
 
 
-
+<hr />
 
 <div class="p-4">
   <h2>Add User</h2>
@@ -40,6 +45,6 @@
   </form>
 
  
-  
+  <hr />
  
 </div>
