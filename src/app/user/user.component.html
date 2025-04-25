@@ -18,7 +18,8 @@
       <td>{{ user.phoneNumber }}</td>
       <td>{{ user.address }}</td>
       <td>
-        <button (click)="viewUserBasedId(user.userId)">View</button> <!-- Fixed Event Binding -->
+        <button (click)="viewUserBasedId(user?.userId ?? '')">View</button>
+
       </td>
     </tr>
   </tbody>

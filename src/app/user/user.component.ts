@@ -23,6 +23,7 @@ export class UserComponent implements OnInit {
   newUser: User = { userName: '', userSurname: '', phoneNumber: '', address: '' ,userId:''};
   selectedUser: User | null = null;
   nextId: number = 1;
+  userid!: string;
 
   constructor(private http: HttpClient) {}  
   ngOnInit(): void {
